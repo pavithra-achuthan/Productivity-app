@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Streaks</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+<div id="splash">
+  <div class="msg" id="splashMsg">Small steps, every day.</div>
+</div>
+ 
+<div class="phone">
+  <div id="app">
+ 
+    <!-- HOME VIEW -->
+    <div class="view active" id="view-home">
+      <div class="topbar">
+        <div>
+          <h1>Challenges</h1>
+          <div class="sub" id="homeSub">Stay consistent</div>
+        </div>
+        <div class="icon-btn" onclick="goSettings()">⚙️</div>
+      </div>
+ 
+      <div class="tabs">
+        <button class="tab active" id="tabChallengesBtn" onclick="switchTab('challenges')">Challenges</button>
+        <button class="tab" id="tabTodoBtn" onclick="switchTab('todo')">To‑Do-Lists</button>
+      </div>
+ 
+      <div class="tabpanels">
+        <div class="panel active" id="panel-challenges">
+          <div id="challengeList"></div>
+        </div>
+        <div class="panel" id="panel-todo">
+          <div class="quick-add">
+            <input type="text" id="newTodoInput" placeholder="Add a task…" maxlength="80">
+            <button onclick="addTodo()">Add</button>
+          </div>
+          <div id="todoList" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- CHALLENGE DETAIL VIEW -->
+    <div class="view" id="view-detail">
+      <div class="back-row">
+        <div class="icon-btn" onclick="goHome()">←</div>
+        <div class="title" id="detailTitle">Challenge</div>
+      </div>
+      <div class="detail-scroll" id="detailScroll"></div>
+    </div>
+ 
+    <!-- SETTINGS VIEW -->
+    <div class="view" id="view-settings">
+      <div class="back-row">
+        <div class="icon-btn" onclick="goHome()">←</div>
+        <div class="title">Settings</div>
+      </div>
+      <div class="settings-scroll">
+        <div class="card-block">
+          <label class="field-label">Mantras</label>
+          <textarea id="setMotivation" maxlength="120"></textarea>
+          <div class="hint"></div>
+        </div>
+        <div class="card-block">
+          <label class="field-label">Streak‑break message</label>
+          <textarea id="setBreakMsg" maxlength="140"></textarea>
+          <div class="hint"></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettingsForm()">Save changes</button>
+ 
+        <div class="card-block">
+          <label class="field-label">Backup</label>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button class="btn btn-ghost btn-sm" onclick="exportBackup()">Export backup (.json)</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">Import backup</button>
+            <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importBackup(event)">
+          </div>
+          <div class="hint">Your data already saves automatically. Export gives you a copy you can keep elsewhere.</div>
+        </div>
+ 
+        <div class="card-block danger-zone">
+          <label class="field-label" style="color:var(--danger)">Danger zone</label>
+          <button class="btn btn-danger btn-sm" onclick="confirmResetAll()">Reset all data</button>
+          <div class="hint">Deletes every challenge, to‑do-lists and setting. Cannot be undone.</div>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <div class="fab" id="fabAdd" onclick="openCreateChallenge()">+</div>
+  <div class="brand-footer">PAVITHRA A S</div>
+</div>
+ 
+<!-- CREATE CHALLENGE MODAL -->
+<div class="modal-backdrop" id="modalCreateChallenge">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2>New challenge</h2>
+    <div class="field">
+      <label class="field-label">Name</label>
+      <input type="text" id="chName" placeholder="Add your challenges.." maxlength="40">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">Start date</label>
+        <div class="date-select" id="chStartDisplay" onclick="openDatePicker('start')">
+          <span id="chStartText">Select date</span><span class="cal-ic">˅</span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">End date</label>
+        <div class="date-select" id="chEndDisplay" onclick="openDatePicker('end')">
+          <span id="chEndText">Select date</span><span class="cal-ic">˅</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalCreateChallenge')">Cancel</button>
+      <button class="btn btn-primary" onclick="createChallenge()">Create</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- DATE PICKER MODAL -->
+<div class="modal-backdrop" id="modalDatePicker">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="dp-header">
+      <div class="icon-btn" style="width:34px;height:34px;font-size:15px;" onclick="dpShiftMonth(-1)">‹</div>
+      <div class="dp-title" id="dpTitle">July 2026</div>
+      <div class="icon-btn" style="width:34px;height:34px;font-size:15px;" onclick="dpShiftMonth(1)">›</div>
+    </div>
+    <div class="dp-weekdays"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    <div class="dp-grid" id="dpGrid"></div>
+  </div>
+</div>
+ 
+<!-- ADD/EDIT TASK MODAL -->
+<div class="modal-backdrop" id="modalTask">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <h2 id="taskModalTitle">Add task</h2>
+    <div class="field">
+      <label class="field-label">Task name</label>
+      <input type="text" id="taskNameInput" placeholder="Add your tasks.." maxlength="40">
+    </div>
+    <div class="hint" id="taskHint" style="margin:-8px 0 16px;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalTask')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTaskModal()">Save</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- GENERIC CONFIRM MODAL -->
+<div class="modal-backdrop" id="modalConfirm">
+  <div class="modal-sheet">
+    <div class="sheet-handle"></div>
+    <div class="confirm-icon" id="confirmIcon">⚠️</div>
+    <h2 id="confirmTitle">Are you sure?</h2>
+    <div class="confirm-text" id="confirmText"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modalConfirm')">Cancel</button>
+      <button class="btn btn-danger" id="confirmActionBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- STREAK BREAK MODAL -->
+<div class="modal-backdrop center-modal" id="modalStreakBreak">
+  <div class="modal-sheet center-sheet">
+    <div class="cmicon">💔</div>
+    <h2>Streak reset</h2>
+    <p id="streakBreakText"></p>
+    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Got it</button>
+  </div>
+</div>
+ 
+<div class="toast" id="toast"></div>
+ 
+<script src="script.js"></script>
+</body>
+</html>
