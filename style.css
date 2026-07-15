@@ -260,7 +260,7 @@
   .cal-cell{ aspect-ratio:1; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; color:var(--text-faint); background:#0a1120; border:1px solid var(--line); }
   .cal-cell.complete{ background: linear-gradient(145deg, var(--good), #1fa876); color:#04170e; border-color:transparent; }
   .cal-cell.cheat{ background: linear-gradient(145deg, var(--flame), #c96a1f); color:#1a0d02; border-color:transparent; }
-  .cal-cell.missed{ background:#1a1220; color:#ff5c7a80; border-color:#ff5c7a25; }
+  .cal-cell.missed{ background: linear-gradient(145deg, var(--danger), #b0334f); color:#2a0410; border-color:transparent; }
   .cal-cell.today{ box-shadow: 0 0 0 1.5px var(--accent); }
   .cal-cell.blank{ background:transparent; border-color:transparent; }
  
