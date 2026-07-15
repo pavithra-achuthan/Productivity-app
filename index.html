@@ -1,9 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Streaks</title>
+<title>Productivity</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#3fc7ff">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,8 +24,8 @@
     <div class="view active" id="view-home">
       <div class="topbar">
         <div>
-          <h1>Challenges</h1>
-          <div class="sub" id="homeSub">Stay consistent</div>
+          <h1>Discipline</h1>
+          <div class="sub" id="homeSub">Stay Consistent.</div>
         </div>
         <div class="icon-btn" onclick="goSettings()">⚙️</div>
       </div>
@@ -174,10 +179,10 @@
 <!-- STREAK BREAK MODAL -->
 <div class="modal-backdrop center-modal" id="modalStreakBreak">
   <div class="modal-sheet center-sheet">
-    <div class="cmicon">💔</div>
-    <h2>Streak reset</h2>
+    <div class="cmicon"></div>
+    <h2>Streak Broken</h2>
     <p id="streakBreakText"></p>
-    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Got it</button>
+    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Start again</button>
   </div>
 </div>
  
