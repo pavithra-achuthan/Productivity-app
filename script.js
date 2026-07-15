@@ -1,3 +1,4 @@
+
 /* ============================= STATE ============================= */
 let DB = {
   settings: { motivationMessage: "Small steps, every day.", streakBreakMessage: "It's okay — every streak starts again with day one. Get back on it today." },
@@ -121,9 +122,8 @@ function completedDaysCount(ch){
   while(ptr<=endLimit){ const s = dayStatus(ch, ptr); if(s==='complete'||s==='cheat') count++; ptr = addDays(ptr,1); }
   return count;
 }
-function cheatDaysUsedThisMonth(ch){
-  const thisMonth = yearMonth(todayKey());
-  return Object.keys(ch.days).filter(k => ch.days[k].cheatUsed && yearMonth(k)===thisMonth).length;
+function cheatDaysUsedTotal(ch){
+  return Object.keys(ch.days).filter(k => ch.days[k].cheatUsed).length;
 }
 function isChallengeOver(ch){ return todayKey() > ch.endDate; }
  
@@ -145,7 +145,7 @@ function renderHome(){
       <div class="edesc">Tap the + button to start your first streak.</div></div>`;
   } else {
     list.innerHTML = DB.challenges.map(ch=>{
-      const cs = currentStreak(ch), bs = bestStreak(ch);
+      const cs = currentStreak(ch);
       const done = completedDaysCount(ch), tot = totalDays(ch);
       const pct = tot>0 ? Math.min(100, Math.round(done/tot*100)) : 0;
       const over = isChallengeOver(ch);
@@ -155,7 +155,6 @@ function renderHome(){
         <div class="cdates">${fmtNice(ch.startDate)} → ${fmtNice(ch.endDate)}</div>
         <div class="streak-row">
           <div class="streak-pill"><span class="flame">🔥</span>${cs}</div>
-          <div class="streak-pill best">best ${bs}</div>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
         <div class="progress-meta"><span>${done}/${tot} days</span><span>${pct}%</span></div>
@@ -289,7 +288,7 @@ function openChallenge(id){
  
 function renderDetail(){
   const ch = getChallenge(currentChallengeId); if(!ch) return;
-  const cs = currentStreak(ch), bs = bestStreak(ch);
+  const cs = currentStreak(ch);
   const done = completedDaysCount(ch), tot = totalDays(ch);
   const pct = tot>0 ? Math.min(100, Math.round(done/tot*100)) : 0;
   const tKey = todayKey();
@@ -298,8 +297,8 @@ function renderDetail(){
   const rec = ch.days[tKey];
   const todayActiveTasks = activeTasksForDay(ch, tKey);
   const isCheatToday = !!(rec && rec.cheatUsed);
-  const cheatUsedMonth = cheatDaysUsedThisMonth(ch);
-  const cheatLeft = 5 - cheatUsedMonth;
+  const cheatUsedTotal = cheatDaysUsedTotal(ch);
+  const cheatLeft = 5 - cheatUsedTotal;
   const todayStatus = dayStatus(ch, tKey);
   const locked = over || !inRange;
  
@@ -307,8 +306,6 @@ function renderDetail(){
     ${over ? `<div class="ended-banner">This challenge ended on ${fmtNice(ch.endDate)}. It's now read-only.</div>` : ''}
     <div class="hero-stats">
       <div class="hero-stat"><div class="val flamecol" id="curStreakVal">🔥 ${cs}</div><div class="lbl">Current</div></div>
-      <div class="hero-divider"></div>
-      <div class="hero-stat"><div class="val">${bs}</div><div class="lbl">Best</div></div>
       <div class="hero-divider"></div>
       <div class="hero-stat"><div class="val">${pct}%</div><div class="lbl">Progress</div></div>
     </div>
@@ -337,13 +334,12 @@ function renderDetail(){
     <div class="card-block">
       <div class="block-head"><h3>Cheat days</h3></div>
       <div class="cheat-row">
-        <div class="cheat-info"><div class="cnum">${Math.max(0,cheatLeft)}/5</div><div class="clbl">left this month</div></div>
+        <div class="cheat-info"><div class="cnum">${Math.max(0,cheatLeft)}/5</div><div class="clbl">left for this challenge</div></div>
         <button class="cheat-btn" ${(locked || (!isCheatToday && (cheatLeft<=0 || todayStatus==='complete'))) ? 'disabled':''} onclick="useCheatDay()">
           ${isCheatToday ? 'Undo cheat day' : 'Use for today'}
         </button>
       </div>
-      <div class="cheat-dots">${[0,1,2,3,4].map(i=>`<div class="cheat-dot ${i < cheatUsedMonth ? 'used':''}"></div>`).join('')}</div>
-      <div class="cheat-reset-link" onclick="confirmResetCheatDays()">Reset cheat days</div>
+      <div class="cheat-dots">${[0,1,2,3,4].map(i=>`<div class="cheat-dot ${i < cheatUsedTotal ? 'used':''}"></div>`).join('')}</div>
     </div>
  
     <div class="card-block">
@@ -438,26 +434,11 @@ function useCheatDay(){
     showToast('Cheat day undone');
     return;
   }
-  if(cheatDaysUsedThisMonth(ch) >= 5){ showToast('No cheat days left this month'); return; }
+  if(cheatDaysUsedTotal(ch) >= 5){ showToast('No cheat days left for this challenge'); return; }
   ch.days[tKey].cheatUsed = true;
   saveChallenges();
   renderDetail(); renderHome();
   showToast('Cheat day used — streak protected');
-}
-function confirmResetCheatDays(){
-  document.getElementById('confirmIcon').textContent = '';
-  document.getElementById('confirmTitle').textContent = 'Reset cheat days?';
-  document.getElementById('confirmText').textContent = "This clears every cheat day used on this challenge, giving you a fresh 5 for this month. This can't be undone.";
-  const btn = document.getElementById('confirmActionBtn');
-  btn.onclick = ()=>{
-    const ch = getChallenge(currentChallengeId);
-    Object.keys(ch.days).forEach(k => { ch.days[k].cheatUsed = false; });
-    saveChallenges();
-    closeModal('modalConfirm');
-    renderDetail(); renderHome();
-    showToast('Cheat days reset');
-  };
-  openModal('modalConfirm');
 }
  
 /* ============================= DELETE / RESET CONFIRM ============================= */
@@ -526,6 +507,13 @@ function importBackup(evt){
   evt.target.value = '';
 }
  
+/* ============================= SERVICE WORKER (installable, offline app shell) ============================= */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW registration failed', e));
+  });
+}
+ 
 /* ============================= BOOT ============================= */
 async function boot(){
   const started = Date.now();
@@ -541,3 +529,4 @@ async function boot(){
   }, wait);
 }
 boot();
+ 
