@@ -140,7 +140,7 @@ function renderHome(){
   const list = document.getElementById('challengeList');
   if(DB.challenges.length===0){
     list.innerHTML = `<div class="empty-state">
-      <div class="eicon">🎯</div><div class="etitle">No challenges yet</div>
+      <div class="eicon"></div><div class="etitle">No challenges yet</div>
       <div class="edesc">Tap the + button to start your first streak.</div></div>`;
   } else {
     list.innerHTML = DB.challenges.map(ch=>{
@@ -163,7 +163,7 @@ function renderHome(){
 
   const tlist = document.getElementById('todoList');
   if(DB.todos.length===0){
-    tlist.innerHTML = `<div class="empty-state"><div class="eicon">📝</div><div class="etitle">Nothing on your list</div><div class="edesc">Add something above.</div></div>`;
+    tlist.innerHTML = `<div class="empty-state"><div class="eicon"></div><div class="etitle">Nothing on your list</div><div class="edesc">Add something above.</div></div>`;
   } else {
     tlist.innerHTML = DB.todos.map(t=>`
       <div class="todo-row ${t.completed?'done':''}">
@@ -445,7 +445,7 @@ function useCheatDay(){
 
 /* ============================= DELETE / RESET CONFIRM ============================= */
 function confirmDeleteChallenge(id, fromDetail){
-  document.getElementById('confirmIcon').textContent = '🗑️';
+  document.getElementById('confirmIcon').textContent = '';
   document.getElementById('confirmTitle').textContent = 'Delete challenge?';
   document.getElementById('confirmText').textContent = "This removes the challenge, its tasks and all progress. This can't be undone.";
   const btn = document.getElementById('confirmActionBtn');
