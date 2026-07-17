@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Productivity</title>
+<title>Streaks</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#3fc7ff">
 <link rel="icon" href="icon-192.png">
@@ -12,29 +11,30 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
+
 <div id="splash">
+  <div class="mark">🔥</div>
   <div class="msg" id="splashMsg">Small steps, every day.</div>
 </div>
- 
+
 <div class="phone">
   <div id="app">
- 
+
     <!-- HOME VIEW -->
     <div class="view active" id="view-home">
       <div class="topbar">
         <div>
-          <h1>Discipline</h1>
-          <div class="sub" id="homeSub">Stay Consistent.</div>
+          <h1>Streaks</h1>
+          <div class="sub" id="homeSub">Stay consistent</div>
         </div>
         <div class="icon-btn" onclick="goSettings()">⚙️</div>
       </div>
- 
+
       <div class="tabs">
         <button class="tab active" id="tabChallengesBtn" onclick="switchTab('challenges')">Challenges</button>
-        <button class="tab" id="tabTodoBtn" onclick="switchTab('todo')">To‑Do-Lists</button>
+        <button class="tab" id="tabTodoBtn" onclick="switchTab('todo')">To‑Do</button>
       </div>
- 
+
       <div class="tabpanels">
         <div class="panel active" id="panel-challenges">
           <div id="challengeList"></div>
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- CHALLENGE DETAIL VIEW -->
     <div class="view" id="view-detail">
       <div class="back-row">
@@ -57,7 +57,7 @@
       </div>
       <div class="detail-scroll" id="detailScroll"></div>
     </div>
- 
+
     <!-- SETTINGS VIEW -->
     <div class="view" id="view-settings">
       <div class="back-row">
@@ -66,17 +66,17 @@
       </div>
       <div class="settings-scroll">
         <div class="card-block">
-          <label class="field-label">Mantras</label>
+          <label class="field-label">Splash message</label>
           <textarea id="setMotivation" maxlength="120"></textarea>
-          <div class="hint"></div>
+          <div class="hint">Shown for 3 seconds when you open the app.</div>
         </div>
         <div class="card-block">
           <label class="field-label">Streak‑break message</label>
           <textarea id="setBreakMsg" maxlength="140"></textarea>
-          <div class="hint"></div>
+          <div class="hint">Shown when a challenge's streak resets.</div>
         </div>
         <button class="btn btn-primary" onclick="saveSettingsForm()">Save changes</button>
- 
+
         <div class="card-block">
           <label class="field-label">Backup</label>
           <div style="display:flex; flex-direction:column; gap:10px;">
@@ -86,21 +86,21 @@
           </div>
           <div class="hint">Your data already saves automatically. Export gives you a copy you can keep elsewhere.</div>
         </div>
- 
+
         <div class="card-block danger-zone">
           <label class="field-label" style="color:var(--danger)">Danger zone</label>
           <button class="btn btn-danger btn-sm" onclick="confirmResetAll()">Reset all data</button>
-          <div class="hint">Deletes every challenge, to‑do-lists and setting. Cannot be undone.</div>
+          <div class="hint">Deletes every challenge, to‑do and setting. Cannot be undone.</div>
         </div>
       </div>
     </div>
- 
+
   </div>
- 
+
   <div class="fab" id="fabAdd" onclick="openCreateChallenge()">+</div>
   <div class="brand-footer">PAVITHRA A S</div>
 </div>
- 
+
 <!-- CREATE CHALLENGE MODAL -->
 <div class="modal-backdrop" id="modalCreateChallenge">
   <div class="modal-sheet">
@@ -108,19 +108,19 @@
     <h2>New challenge</h2>
     <div class="field">
       <label class="field-label">Name</label>
-      <input type="text" id="chName" placeholder="Add your challenges.." maxlength="40">
+      <input type="text" id="chName" placeholder="e.g. 75 Hard, No sugar…" maxlength="40">
     </div>
     <div class="field-row">
       <div class="field">
         <label class="field-label">Start date</label>
         <div class="date-select" id="chStartDisplay" onclick="openDatePicker('start')">
-          <span id="chStartText">Select date</span><span class="cal-ic">˅</span>
+          <span id="chStartText">Select date</span><span class="cal-ic">📅</span>
         </div>
       </div>
       <div class="field">
         <label class="field-label">End date</label>
         <div class="date-select" id="chEndDisplay" onclick="openDatePicker('end')">
-          <span id="chEndText">Select date</span><span class="cal-ic">˅</span>
+          <span id="chEndText">Select date</span><span class="cal-ic">📅</span>
         </div>
       </div>
     </div>
@@ -130,7 +130,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- DATE PICKER MODAL -->
 <div class="modal-backdrop" id="modalDatePicker">
   <div class="modal-sheet">
@@ -144,7 +144,7 @@
     <div class="dp-grid" id="dpGrid"></div>
   </div>
 </div>
- 
+
 <!-- ADD/EDIT TASK MODAL -->
 <div class="modal-backdrop" id="modalTask">
   <div class="modal-sheet">
@@ -152,7 +152,7 @@
     <h2 id="taskModalTitle">Add task</h2>
     <div class="field">
       <label class="field-label">Task name</label>
-      <input type="text" id="taskNameInput" placeholder="Add your tasks.." maxlength="40">
+      <input type="text" id="taskNameInput" placeholder="e.g. Exercise, Drink water…" maxlength="40">
     </div>
     <div class="hint" id="taskHint" style="margin:-8px 0 16px;"></div>
     <div class="modal-actions">
@@ -161,7 +161,7 @@
     </div>
   </div>
 </div>
- 
+
 <!-- GENERIC CONFIRM MODAL -->
 <div class="modal-backdrop" id="modalConfirm">
   <div class="modal-sheet">
@@ -175,19 +175,19 @@
     </div>
   </div>
 </div>
- 
+
 <!-- STREAK BREAK MODAL -->
 <div class="modal-backdrop center-modal" id="modalStreakBreak">
   <div class="modal-sheet center-sheet">
-    <div class="cmicon"></div>
-    <h2>Streak Broken</h2>
+    <div class="cmicon">💔</div>
+    <h2>Streak reset</h2>
     <p id="streakBreakText"></p>
-    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Start again</button>
+    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Got it</button>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script src="script.js"></script>
 </body>
 </html>
