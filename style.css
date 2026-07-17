@@ -1,4 +1,3 @@
-
 :root{
     --bg: #070b14;
     --bg-elev: #0d1220;
@@ -31,7 +30,7 @@
   h1,h2,h3, .display{ font-family:'Sora', system-ui, sans-serif; }
   button{ font-family:inherit; }
   ::selection{ background: var(--accent-dim); }
- 
+
   .phone{
     width:100%;
     max-width:440px;
@@ -41,7 +40,7 @@
     flex-direction:column;
     background: transparent;
   }
- 
+
   /* ---------- SPLASH ---------- */
   #splash{
     position:fixed; inset:0;
@@ -68,15 +67,15 @@
   }
   @keyframes fadeUp{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
   #splash.hide{ opacity:0; pointer-events:none; }
- 
+
   /* ---------- SHELL ---------- */
   #app{ display:none; flex-direction:column; min-height:100vh; padding-bottom: 54px; }
   #app.show{ display:flex; }
- 
+
   .view{ display:none; flex:1; flex-direction:column; animation: viewIn .35s ease; }
   .view.active{ display:flex; }
   @keyframes viewIn{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)} }
- 
+
   .topbar{
     display:flex; align-items:center; justify-content:space-between;
     padding: 22px 20px 10px;
@@ -94,7 +93,7 @@
   .back-row{ display:flex; align-items:center; gap:12px; padding: 18px 20px 6px; }
   .back-row .icon-btn{ flex-shrink:0; }
   .back-row .title{ font-size:19px; font-weight:800; font-family:'Sora',sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
- 
+
   /* ---------- HOME / TABS ---------- */
   .tabs{
     display:flex; margin: 14px 20px 4px; background:var(--card); border:1px solid var(--line);
@@ -105,11 +104,11 @@
     color:var(--text-dim); cursor:pointer; transition: all .18s ease; border:none; background:transparent;
   }
   .tab.active{ background: linear-gradient(145deg, var(--accent), #1f8fc2); color:#04141c; }
- 
+
   .tabpanels{ position:relative; flex:1; padding: 14px 20px 20px; }
   .panel{ display:none; flex-direction:column; gap:12px; }
   .panel.active{ display:flex; }
- 
+
   /* ---------- CHALLENGE CARD ---------- */
   .challenge-card{
     background: linear-gradient(155deg, var(--card) 0%, #0f1626 100%);
@@ -141,14 +140,14 @@
   .progress-fill{ height:100%; border-radius:6px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .4s ease; }
   .progress-meta{ display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text-faint); font-weight:600; }
   .ended-badge{ display:inline-block; font-size:10px; font-weight:800; color:var(--text-faint); background:#0a1120; border:1px solid var(--line); padding:2px 7px; border-radius:6px; margin-left:6px; text-transform:uppercase; letter-spacing:.04em; }
- 
+
   .empty-state{
     border:1.5px dashed var(--line); border-radius: var(--radius); padding: 28px 16px; text-align:center; color:var(--text-dim);
   }
   .empty-state .eicon{ font-size:26px; margin-bottom:8px; opacity:.7; }
   .empty-state .etitle{ font-weight:700; color:var(--text); font-size:14px; margin-bottom:4px; font-family:'Sora',sans-serif;}
   .empty-state .edesc{ font-size:12.5px; line-height:1.5; }
- 
+
   .fab{
     position: fixed; bottom: 70px; left:50%; transform: translateX(-50%);
     width:52px; height:52px; border-radius:50%;
@@ -161,7 +160,7 @@
     max-width:440px; margin: 0 auto;
   }
   .fab:active{ transform: translateX(-50%) scale(0.9); }
- 
+
   /* ---------- TODO ---------- */
   .todo-row{
     display:flex; align-items:center; gap:11px; background:var(--card); border:1px solid var(--line);
@@ -182,7 +181,7 @@
     background: var(--accent); color:#04141c; border:none; border-radius: var(--radius-sm); padding: 0 16px;
     font-weight:800; font-size:13px; cursor:pointer;
   }
- 
+
   /* ---------- FORM ELEMENTS ---------- */
   input[type=text], textarea{
     background: var(--card); border:1px solid var(--line); color:var(--text);
@@ -195,7 +194,7 @@
   .field{ margin-bottom:16px; }
   .field-row{ display:flex; gap:10px; }
   .field-row .field{ flex:1; }
- 
+
   .date-select{
     background: var(--card); border:1px solid var(--line); color:var(--text);
     border-radius: var(--radius-sm); padding: 12px 13px; font-size:13.5px; font-weight:600;
@@ -204,7 +203,7 @@
   .date-select:active{ border-color: var(--accent); }
   .date-select .cal-ic{ opacity:.6; }
   .date-select.placeholder{ color: var(--text-faint); font-weight:500; }
- 
+
   .btn{
     border:none; border-radius: var(--radius-sm); padding: 13px; font-weight:800; font-size:14px; cursor:pointer;
     width:100%; transition: transform .15s ease, opacity .15s ease; font-family:inherit;
@@ -215,7 +214,7 @@
   .btn-danger{ background: var(--danger-dim); color: var(--danger); border:1px solid #ff5c7a3a; }
   .btn-sm{ padding:10px; font-size:13px; }
   .btn:disabled{ opacity:.35; pointer-events:none; }
- 
+
   /* ---------- CHALLENGE DETAIL ---------- */
   .detail-scroll{ padding: 8px 20px 24px; display:flex; flex-direction:column; gap:18px; flex:1; }
   .ended-banner{
@@ -230,19 +229,19 @@
   .hero-stat .val.flamecol{ color: var(--flame); }
   .hero-stat .lbl{ font-size:11px; color:var(--text-faint); font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
   .hero-divider{ width:1px; height:34px; background:var(--line); }
- 
+
   .card-block{ background:var(--card); border:1px solid var(--line); border-radius: var(--radius); padding:16px; }
   .block-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
   .block-head h3{ margin:0; font-size:14.5px; font-weight:700; }
   .block-head .add-link{ color:var(--accent); font-size:12.5px; font-weight:700; cursor:pointer; }
   .block-head .add-link.disabled{ color: var(--text-faint); pointer-events:none; }
- 
+
   .task-row{ display:flex; align-items:center; gap:11px; padding: 9px 0; border-bottom:1px solid var(--line); }
   .task-row:last-child{ border-bottom:none; }
   .task-row .tname{ flex:1; font-size:13.5px; font-weight:500; }
   .task-row.done .tname{ color:var(--text-faint); text-decoration: line-through; }
   .task-row .tactions{ display:flex; gap:10px; color:var(--text-faint); font-size:13px; }
- 
+
   .cheat-row{ display:flex; align-items:center; justify-content:space-between; }
   .cheat-info .cnum{ font-family:'Sora',sans-serif; font-weight:800; font-size:20px; }
   .cheat-info .clbl{ font-size:11.5px; color:var(--text-dim); font-weight:600; margin-top:1px; }
@@ -255,7 +254,7 @@
   .cheat-dot{ width:8px; height:8px; border-radius:50%; background:var(--line); }
   .cheat-dot.used{ background: var(--flame); }
   .cheat-reset-link{ text-align:center; margin-top:12px; font-size:11.5px; color:var(--text-faint); font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
- 
+
   .calendar-grid{ display:grid; grid-template-columns: repeat(7,1fr); gap:5px; margin-top:4px; }
   .cal-cell{ aspect-ratio:1; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700; color:var(--text-faint); background:#0a1120; border:1px solid var(--line); }
   .cal-cell.complete{ background: linear-gradient(145deg, var(--good), #1fa876); color:#04170e; border-color:transparent; }
@@ -263,14 +262,14 @@
   .cal-cell.missed{ background: linear-gradient(145deg, var(--danger), #b0334f); color:#2a0410; border-color:transparent; }
   .cal-cell.today{ box-shadow: 0 0 0 1.5px var(--accent); }
   .cal-cell.blank{ background:transparent; border-color:transparent; }
- 
+
   .danger-zone{ margin-top:4px; }
- 
+
   /* ---------- SETTINGS ---------- */
   .settings-scroll{ padding: 8px 20px 24px; display:flex; flex-direction:column; gap:18px; }
   .settings-scroll .btn{ margin-top:2px; }
   .hint{ font-size:11.5px; color:var(--text-faint); margin-top:8px; line-height:1.5; }
- 
+
   /* ---------- MODALS ---------- */
   .modal-backdrop{
     position:fixed; inset:0; background:#03050bcc; backdrop-filter: blur(3px); z-index:60;
@@ -288,18 +287,18 @@
   .sheet-handle{ width:36px; height:4px; background:var(--line); border-radius:4px; margin: 4px auto 16px; }
   .modal-sheet h2{ font-size:17px; margin: 0 0 16px; font-weight:800; }
   .modal-actions{ display:flex; gap:10px; margin-top:6px; }
- 
+
   /* ---------- CONFIRM MODAL ---------- */
   .confirm-icon{ font-size:26px; margin-bottom:8px; }
   .confirm-text{ color:var(--text-dim); font-size:13.5px; line-height:1.55; margin-bottom:18px; }
- 
+
   /* ---------- STREAK BREAK / CELEBRATION MODAL ---------- */
   .center-modal{ align-items:center; }
   .center-sheet{ border-radius: 22px; text-align:center; max-width: 340px; margin: 0 20px; }
   .center-sheet .cmicon{ font-size:38px; margin-bottom:10px; }
   .center-sheet h2{ text-align:center; }
   .center-sheet p{ color:var(--text-dim); font-size:13.5px; line-height:1.6; margin: 0 0 18px; }
- 
+
   /* ---------- DATE PICKER ---------- */
   .dp-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
   .dp-title{ font-weight:800; font-size:15px; font-family:'Sora',sans-serif; }
@@ -313,14 +312,14 @@
   .dp-cell.selected{ background: linear-gradient(145deg, var(--accent), #1c7fae); color:#04141c; font-weight:800; }
   .dp-cell.disabled{ color: var(--text-faint); opacity:.35; pointer-events:none; }
   .dp-cell:active{ transform: scale(0.9); }
- 
+
   /* ---------- FOOTER ---------- */
   .brand-footer{
     position: fixed; bottom:0; left:0; right:0; text-align:center; padding: 14px 0 12px;
     font-size:10.5px; letter-spacing:.14em; color:var(--text); opacity:.16; font-weight:700;
     z-index:15; pointer-events:none; background: linear-gradient(0deg, var(--bg) 40%, transparent);
   }
- 
+
   .toast{
     position:fixed; bottom:78px; left:50%; transform: translateX(-50%) translateY(20px);
     background: var(--card); border:1px solid var(--line); color:var(--text); font-size:13px; font-weight:600;
@@ -328,6 +327,6 @@
     max-width: 85%; text-align:center; box-shadow: 0 8px 24px -6px #000a;
   }
   .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
- 
+
   @keyframes pulseFlame{ 0%{transform:scale(1)} 30%{transform:scale(1.35)} 60%{transform:scale(0.95)} 100%{transform:scale(1)} }
   .pulse{ animation: pulseFlame .5s ease; display:inline-block; }
