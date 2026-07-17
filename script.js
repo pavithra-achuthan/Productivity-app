@@ -1,4 +1,3 @@
-
 /* ============================= STATE ============================= */
 let DB = {
   settings: { motivationMessage: "Small steps, every day.", streakBreakMessage: "It's okay — every streak starts again with day one. Get back on it today." },
@@ -8,7 +7,7 @@ let DB = {
 let currentChallengeId = null;
 let editingTaskId = null;
 let activeTab = 'challenges';
- 
+
 /* ============================= UTIL ============================= */
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
 function toKey(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }
@@ -25,7 +24,7 @@ function showToast(msg){
 function openModal(id){ document.getElementById(id).classList.add('show'); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
- 
+
 /* ============================= STORAGE (offline, on-device) ============================= */
 // Uses the phone browser's own localStorage — no network or server needed, works fully offline.
 const STORAGE_PREFIX = 'streaks-app:';
@@ -45,7 +44,7 @@ async function loadAll(){
 function saveSettingsData(){ return saveKey('settings', DB.settings); }
 function saveChallenges(){ return saveKey('challenges', DB.challenges); }
 function saveTodos(){ return saveKey('todos', DB.todos); }
- 
+
 // Upgrades challenges saved by the older version of this app to the new per-day data shape.
 function migrateChallenge(ch){
   if(!ch.days){
@@ -68,14 +67,14 @@ function migrateChallenge(ch){
   if(ch.lastBreakNotified===undefined) ch.lastBreakNotified = null;
   return ch;
 }
- 
+
 /* ============================= CHALLENGE LOGIC ============================= */
 function getChallenge(id){ return DB.challenges.find(c=>c.id===id); }
- 
+
 function activeTasksForDay(ch, dateKey){
   return ch.tasks.filter(t => t.createdDate <= dateKey && (!t.deletedDate || dateKey < t.deletedDate));
 }
- 
+
 function dayStatus(ch, key){
   if(key < ch.startDate || key > ch.endDate) return 'blank';
   const tKey = todayKey();
@@ -89,7 +88,7 @@ function dayStatus(ch, key){
   if(key===tKey) return 'pending';
   return 'missed';
 }
- 
+
 function currentStreak(ch){
   let ptr = todayKey();
   let st = dayStatus(ch, ptr);
@@ -126,7 +125,7 @@ function cheatDaysUsedTotal(ch){
   return Object.keys(ch.days).filter(k => ch.days[k].cheatUsed).length;
 }
 function isChallengeOver(ch){ return todayKey() > ch.endDate; }
- 
+
 /* ============================= RENDER: HOME ============================= */
 function switchTab(tab){
   activeTab = tab;
@@ -136,12 +135,12 @@ function switchTab(tab){
   document.getElementById('panel-todo').classList.toggle('active', tab==='todo');
   document.getElementById('fabAdd').style.display = tab==='challenges' ? 'flex' : 'none';
 }
- 
+
 function renderHome(){
   const list = document.getElementById('challengeList');
   if(DB.challenges.length===0){
     list.innerHTML = `<div class="empty-state">
-      <div class="eicon"></div><div class="etitle">No challenges yet</div>
+      <div class="eicon">🎯</div><div class="etitle">No challenges yet</div>
       <div class="edesc">Tap the + button to start your first streak.</div></div>`;
   } else {
     list.innerHTML = DB.challenges.map(ch=>{
@@ -161,10 +160,10 @@ function renderHome(){
       </div>`;
     }).join('');
   }
- 
+
   const tlist = document.getElementById('todoList');
   if(DB.todos.length===0){
-    tlist.innerHTML = `<div class="empty-state"><div class="eicon"></div><div class="etitle">Nothing on your list</div><div class="edesc">Add something above.</div></div>`;
+    tlist.innerHTML = `<div class="empty-state"><div class="eicon">📝</div><div class="etitle">Nothing on your list</div><div class="edesc">Add something above.</div></div>`;
   } else {
     tlist.innerHTML = DB.todos.map(t=>`
       <div class="todo-row ${t.completed?'done':''}">
@@ -174,7 +173,7 @@ function renderHome(){
       </div>`).join('');
   }
 }
- 
+
 /* ============================= TODOS ============================= */
 function addTodo(){
   const input = document.getElementById('newTodoInput');
@@ -185,7 +184,7 @@ function addTodo(){
 function toggleTodo(id){ const t = DB.todos.find(x=>x.id===id); if(!t) return; t.completed = !t.completed; saveTodos(); renderHome(); }
 function deleteTodo(id){ DB.todos = DB.todos.filter(x=>x.id!==id); saveTodos(); renderHome(); }
 document.getElementById('newTodoInput').addEventListener('keydown', e=>{ if(e.key==='Enter') addTodo(); });
- 
+
 /* ============================= NAVIGATION ============================= */
 function showView(id){ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 function goHome(){ showView('view-home'); document.getElementById('fabAdd').style.display = activeTab==='challenges' ? 'flex' : 'none'; renderHome(); }
@@ -195,12 +194,12 @@ function goSettings(){
   document.getElementById('fabAdd').style.display='none';
   showView('view-settings');
 }
- 
+
 /* ============================= DATE PICKER (calendar-only, no typing) ============================= */
 let dpTarget = null; // 'start' | 'end'
 let dpViewDate = new Date();
 let chStartValue = null, chEndValue = null;
- 
+
 function updateDateDisplays(){
   const st = document.getElementById('chStartText'), et = document.getElementById('chEndText');
   st.textContent = chStartValue ? fmtNice(chStartValue) : 'Select date';
@@ -247,7 +246,7 @@ function pickDate(key){
   updateDateDisplays();
   closeModal('modalDatePicker');
 }
- 
+
 /* ============================= CREATE CHALLENGE ============================= */
 function openCreateChallenge(){
   document.getElementById('chName').value='';
@@ -267,25 +266,25 @@ function createChallenge(){
   closeModal('modalCreateChallenge');
   openChallenge(ch.id);
 }
- 
+
 /* ============================= CHALLENGE DETAIL ============================= */
 function openChallenge(id){
   currentChallengeId = id;
   const ch = getChallenge(id); if(!ch) return;
- 
+
   const yKey = addDays(todayKey(),-1);
   if(yKey >= ch.startDate && dayStatus(ch,yKey)==='missed' && ch.lastBreakNotified!==yKey && bestStreak(ch)>0 && currentStreak(ch)===0){
     ch.lastBreakNotified = yKey; saveChallenges();
     document.getElementById('streakBreakText').textContent = DB.settings.streakBreakMessage;
     openModal('modalStreakBreak');
   }
- 
+
   document.getElementById('detailTitle').textContent = ch.name;
   showView('view-detail');
   document.getElementById('fabAdd').style.display='none';
   renderDetail();
 }
- 
+
 function renderDetail(){
   const ch = getChallenge(currentChallengeId); if(!ch) return;
   const cs = currentStreak(ch);
@@ -293,6 +292,7 @@ function renderDetail(){
   const pct = tot>0 ? Math.min(100, Math.round(done/tot*100)) : 0;
   const tKey = todayKey();
   const over = isChallengeOver(ch);
+  const notStarted = tKey < ch.startDate;
   const inRange = tKey>=ch.startDate && tKey<=ch.endDate;
   const rec = ch.days[tKey];
   const todayActiveTasks = activeTasksForDay(ch, tKey);
@@ -300,19 +300,21 @@ function renderDetail(){
   const cheatUsedTotal = cheatDaysUsedTotal(ch);
   const cheatLeft = 5 - cheatUsedTotal;
   const todayStatus = dayStatus(ch, tKey);
-  const locked = over || !inRange;
- 
+  const locked = over; // blocks adding/editing/deleting tasks — only once the challenge has ended
+  const actionsLocked = over || !inRange; // blocks checking off tasks / cheat day — needs an active "today"
+
   document.getElementById('detailScroll').innerHTML = `
     ${over ? `<div class="ended-banner">This challenge ended on ${fmtNice(ch.endDate)}. It's now read-only.</div>` : ''}
+    ${notStarted ? `<div class="ended-banner" style="background:var(--accent-dim); border-color:#3fc7ff35; color:var(--accent);">Starts ${fmtNice(ch.startDate)} — add your tasks now, they'll be ready to check off from day one.</div>` : ''}
     <div class="hero-stats">
       <div class="hero-stat"><div class="val flamecol" id="curStreakVal">🔥 ${cs}</div><div class="lbl">Current</div></div>
       <div class="hero-divider"></div>
       <div class="hero-stat"><div class="val">${pct}%</div><div class="lbl">Progress</div></div>
     </div>
- 
+
     <div class="card-block">
       <div class="block-head">
-        <h3>Today's tasks</h3>
+        <h3>${notStarted ? 'Tasks' : "Today's tasks"}</h3>
         <div class="add-link ${locked?'disabled':''}" onclick="openTaskModal()">+ Add task</div>
       </div>
       ${ch.tasks.length===0 ? `<div class="hint">Add tasks below — complete all of them each day to keep your streak alive.</div>` :
@@ -320,7 +322,7 @@ function renderDetail(){
         todayActiveTasks.map(t=>{
           const isDone = !!(rec && rec.tasks && rec.tasks[t.id]);
           return `<div class="task-row ${isDone?'done':''}">
-            <div class="checkbox ${isDone?'checked':''} ${locked?'disabled':''}" onclick="toggleTaskToday('${t.id}')">${isDone?'✓':''}</div>
+            <div class="checkbox ${isDone?'checked':''} ${actionsLocked?'disabled':''}" onclick="toggleTaskToday('${t.id}')">${isDone?'✓':''}</div>
             <div class="tname">${escapeHtml(t.name)}</div>
             <div class="tactions">
               <span onclick="openTaskModal('${t.id}')">✎</span>
@@ -330,30 +332,30 @@ function renderDetail(){
         }).join('')
       }
     </div>
- 
+
     <div class="card-block">
       <div class="block-head"><h3>Cheat days</h3></div>
       <div class="cheat-row">
         <div class="cheat-info"><div class="cnum">${Math.max(0,cheatLeft)}/5</div><div class="clbl">left for this challenge</div></div>
-        <button class="cheat-btn" ${(locked || (!isCheatToday && (cheatLeft<=0 || todayStatus==='complete'))) ? 'disabled':''} onclick="useCheatDay()">
+        <button class="cheat-btn" ${(actionsLocked || (!isCheatToday && (cheatLeft<=0 || todayStatus==='complete'))) ? 'disabled':''} onclick="useCheatDay()">
           ${isCheatToday ? 'Undo cheat day' : 'Use for today'}
         </button>
       </div>
       <div class="cheat-dots">${[0,1,2,3,4].map(i=>`<div class="cheat-dot ${i < cheatUsedTotal ? 'used':''}"></div>`).join('')}</div>
     </div>
- 
+
     <div class="card-block">
       <div class="block-head"><h3>Calendar</h3></div>
       ${renderCalendar(ch)}
       <div class="hint">🟢 complete · 🟠 cheat day · 🔴 missed</div>
     </div>
- 
+
     <div class="card-block danger-zone">
       <button class="btn btn-danger btn-sm" onclick="confirmDeleteChallenge('${ch.id}', true)">Delete this challenge</button>
     </div>
   `;
 }
- 
+
 function renderCalendar(ch){
   const start = keyToDate(ch.startDate);
   const leadBlanks = start.getDay();
@@ -370,7 +372,7 @@ function renderCalendar(ch){
   }
   return `<div class="calendar-grid">${cells}</div>`;
 }
- 
+
 function toggleTaskToday(taskId){
   const ch = getChallenge(currentChallengeId); if(!ch) return;
   const tKey = todayKey();
@@ -392,7 +394,7 @@ function toggleTaskToday(taskId){
     showToast('Task unchecked — streak updated');
   }
 }
- 
+
 function openTaskModal(taskId){
   editingTaskId = taskId || null;
   document.getElementById('taskModalTitle').textContent = taskId ? 'Edit task' : 'Add task';
@@ -422,7 +424,7 @@ function deleteTask(taskId){
   saveChallenges();
   renderDetail(); renderHome();
 }
- 
+
 function useCheatDay(){
   const ch = getChallenge(currentChallengeId); if(!ch) return;
   const tKey = todayKey();
@@ -440,10 +442,10 @@ function useCheatDay(){
   renderDetail(); renderHome();
   showToast('Cheat day used — streak protected');
 }
- 
+
 /* ============================= DELETE / RESET CONFIRM ============================= */
 function confirmDeleteChallenge(id, fromDetail){
-  document.getElementById('confirmIcon').textContent = '';
+  document.getElementById('confirmIcon').textContent = '🗑️';
   document.getElementById('confirmTitle').textContent = 'Delete challenge?';
   document.getElementById('confirmText').textContent = "This removes the challenge, its tasks and all progress. This can't be undone.";
   const btn = document.getElementById('confirmActionBtn');
@@ -470,7 +472,7 @@ function confirmResetAll(){
   };
   openModal('modalConfirm');
 }
- 
+
 /* ============================= SETTINGS ============================= */
 function saveSettingsForm(){
   DB.settings.motivationMessage = document.getElementById('setMotivation').value.trim() || 'Small steps, every day.';
@@ -506,14 +508,14 @@ function importBackup(evt){
   reader.readAsText(file);
   evt.target.value = '';
 }
- 
+
 /* ============================= SERVICE WORKER (installable, offline app shell) ============================= */
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
     navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW registration failed', e));
   });
 }
- 
+
 /* ============================= BOOT ============================= */
 async function boot(){
   const started = Date.now();
@@ -529,4 +531,3 @@ async function boot(){
   }, wait);
 }
 boot();
- 
