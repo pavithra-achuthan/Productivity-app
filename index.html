@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Streaks</title>
+<title>Productivity</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#3fc7ff">
 <link rel="icon" href="icon-192.png">
@@ -13,7 +13,6 @@
 <body>
 
 <div id="splash">
-  <div class="mark">🔥</div>
   <div class="msg" id="splashMsg">Small steps, every day.</div>
 </div>
 
@@ -24,7 +23,7 @@
     <div class="view active" id="view-home">
       <div class="topbar">
         <div>
-          <h1>Streaks</h1>
+          <h1>Discipline</h1>
           <div class="sub" id="homeSub">Stay consistent</div>
         </div>
         <div class="icon-btn" onclick="goSettings()">⚙️</div>
@@ -32,7 +31,7 @@
 
       <div class="tabs">
         <button class="tab active" id="tabChallengesBtn" onclick="switchTab('challenges')">Challenges</button>
-        <button class="tab" id="tabTodoBtn" onclick="switchTab('todo')">To‑Do</button>
+        <button class="tab" id="tabTodoBtn" onclick="switchTab('todo')">To‑Do-Lists</button>
       </div>
 
       <div class="tabpanels">
@@ -41,7 +40,7 @@
         </div>
         <div class="panel" id="panel-todo">
           <div class="quick-add">
-            <input type="text" id="newTodoInput" placeholder="Add a task…" maxlength="80">
+            <input type="text" id="newTodoInput" placeholder="Add your task…" maxlength="80">
             <button onclick="addTodo()">Add</button>
           </div>
           <div id="todoList" style="display:flex; flex-direction:column; gap:8px; margin-top:4px;"></div>
@@ -66,14 +65,14 @@
       </div>
       <div class="settings-scroll">
         <div class="card-block">
-          <label class="field-label">Splash message</label>
+          <label class="field-label">Mantra</label>
           <textarea id="setMotivation" maxlength="120"></textarea>
-          <div class="hint">Shown for 3 seconds when you open the app.</div>
+          <div class="hint"></div>
         </div>
         <div class="card-block">
           <label class="field-label">Streak‑break message</label>
           <textarea id="setBreakMsg" maxlength="140"></textarea>
-          <div class="hint">Shown when a challenge's streak resets.</div>
+          <div class="hint"></div>
         </div>
         <button class="btn btn-primary" onclick="saveSettingsForm()">Save changes</button>
 
@@ -108,19 +107,19 @@
     <h2>New challenge</h2>
     <div class="field">
       <label class="field-label">Name</label>
-      <input type="text" id="chName" placeholder="e.g. 75 Hard, No sugar…" maxlength="40">
+      <input type="text" id="chName" placeholder="Add your challenge.." maxlength="40">
     </div>
     <div class="field-row">
       <div class="field">
         <label class="field-label">Start date</label>
         <div class="date-select" id="chStartDisplay" onclick="openDatePicker('start')">
-          <span id="chStartText">Select date</span><span class="cal-ic">📅</span>
+          <span id="chStartText">Select date</span><span class="cal-ic">˅</span>
         </div>
       </div>
       <div class="field">
         <label class="field-label">End date</label>
         <div class="date-select" id="chEndDisplay" onclick="openDatePicker('end')">
-          <span id="chEndText">Select date</span><span class="cal-ic">📅</span>
+          <span id="chEndText">Select date</span><span class="cal-ic">˅</span>
         </div>
       </div>
     </div>
@@ -152,7 +151,7 @@
     <h2 id="taskModalTitle">Add task</h2>
     <div class="field">
       <label class="field-label">Task name</label>
-      <input type="text" id="taskNameInput" placeholder="e.g. Exercise, Drink water…" maxlength="40">
+      <input type="text" id="taskNameInput" placeholder="Add your task.." maxlength="40">
     </div>
     <div class="hint" id="taskHint" style="margin:-8px 0 16px;"></div>
     <div class="modal-actions">
@@ -179,10 +178,10 @@
 <!-- STREAK BREAK MODAL -->
 <div class="modal-backdrop center-modal" id="modalStreakBreak">
   <div class="modal-sheet center-sheet">
-    <div class="cmicon">💔</div>
-    <h2>Streak reset</h2>
+    <div class="cmicon"></div>
+    <h2>Streak broken</h2>
     <p id="streakBreakText"></p>
-    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Got it</button>
+    <button class="btn btn-primary" onclick="closeModal('modalStreakBreak')">Start again</button>
   </div>
 </div>
 
